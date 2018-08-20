@@ -5,6 +5,7 @@ Takes audio and cover art and exports a video to upload online
 - [MoviePy](https://github.com/Zulko/moviepy)
 - [ImageMaick](https://www.imagemagick.org/script/index.php)
 - [Mutagen](https://github.com/llogiq/mutagen)
+- [Noto Sans Font](https://www.google.com/get/noto/), but you can change it
 
 ## Running
 1. Delete the files in export and import folders
