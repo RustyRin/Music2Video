@@ -5,11 +5,12 @@ from PIL import Image, ImageFilter
 from mutagen.flac import FLAC
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
-import os
+import os, shutil
 
 
 make_4k = True      # do you want your video to be exported in 4K
 make_whole_album = True     # do you want to make a video of the whole album
+debug_mode = False
 
 
 def number_or_files(dir):   # returns the number of files in folder
@@ -101,9 +102,24 @@ def make_text(text, type, length=0, color='white', method='caption', align='nort
             return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
 
 
+def clear_folder(folder):
+    for the_file in os.listdir(folder):
+        file_path = os.path.join(folder, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+            # elif os.path.isdir(file_path): shutil.rmtree(file_path)
+        except Exception as e:
+            print(e)
+
+
 def main():
+
+    # CLEARING EXPORT FOLDER
+    clear_folder('export')
+
     for filename in os.listdir('input/'):   # finds finds the cover art photo in the input folder
-        if os.path.splitext(filename)[1] == '.png' or '.jpg' or '.JPEG':
+        if os.path.splitext(filename)[1] == '.png' or os.path.splitext(filename)[1] == '.jpg' or os.path.splitext(filename)[1] == '.JPEG':
             album_art = 'input/' + filename
 
     # TRANSPARENT
@@ -174,8 +190,8 @@ def main():
                 audio = MP3('input\\' + str(filename))
                 vid_length = audio.info.length
 
-            # Debug length. Use this if something looks weird and you dont want to wait forever to export
-            vid_length = 3
+            if debug_mode:
+                vid_length = 5
 
             totaltime += vid_length
 
