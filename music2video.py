@@ -71,10 +71,10 @@ def make_text(text, type, length=0, color='white', method='caption', align='nort
 
         if make_4k:     # If the selected size is 4K or not
             font_size = 90
-            size = (1982, 200)
+            size = (1982, 300)
         else:
             font_size = 45
-            size = (991, 100)
+            size = (991, 150)
 
         if is_string_cjk(text) is False:        # If the text has a Chinese or Japanese Character in
             font = 'Noto-Sans-Light-Italic'
