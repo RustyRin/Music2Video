@@ -5,7 +5,9 @@ from PIL import Image, ImageFilter
 from mutagen.flac import FLAC
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
-import os, shutil
+import os, sys
+sys.path.append(os.getcwd())
+import unicode_search
 
 
 make_4k = True      # do you want your video to be exported in 4K
@@ -21,35 +23,6 @@ def clean_tag(tag):     # mutagen gives track metadata in castings or something.
     return tag[2:-2]
 
 
-def is_char_cjk(char):  # checks if given character is chinese, japanese or korean
-    ranges = [          # idk what the ranges without comments are, the dude on stack overflow didn't say (or at least what i saw)
-        {"from": ord(u"\u3300"), "to": ord(u"\u33ff")},  # compatibility ideographs
-        {"from": ord(u"\ufe30"), "to": ord(u"\ufe4f")},  # compatibility ideographs
-        {"from": ord(u"\uf900"), "to": ord(u"\ufaff")},  # compatibility ideographs
-        {"from": ord(u"\U0002F800"), "to": ord(u"\U0002fa1f")},  # compatibility ideographs
-        {"from": ord(u"\u30a0"), "to": ord(u"\u30ff")},  # Japanese Kana, only thing i improved on it
-        {"from": ord(u"\u2e80"), "to": ord(u"\u2eff")},  # cjk radicals supplement
-        {"from": ord(u"\u4e00"), "to": ord(u"\u9fff")},
-        {"from": ord(u"\u3400"), "to": ord(u"\u4dbf")},
-        {"from": ord(u"\u3040"), "to": ord(u"\u309f")},  # japanese hiragana
-        {"from": ord(u"\U00020000"), "to": ord(u"\U0002a6df")},
-        {"from": ord(u"\U0002a700"), "to": ord(u"\U0002b73f")},
-        {"from": ord(u"\U0002b740"), "to": ord(u"\U0002b81f")},
-        {"from": ord(u"\U0002b820"), "to": ord(u"\U0002ceaf")}  # included as of Unicode 8.0
-    ]
-    return any([range["from"] <= ord(char) <= range["to"] for range in ranges])
-
-
-def is_string_cjk(input_string):    # checks if the string has any chinese, japanese or korean characters
-    i = 0
-    input_string = list(input_string)
-    while i < len(input_string):
-        if is_char_cjk(input_string[i]) == True:
-            return True
-        i += 1
-    return False
-
-
 def make_text(text, type, length=0, color='white', method='caption', align='north-west'):   # makes textclips
     if type == 'artist':
 
@@ -60,10 +33,9 @@ def make_text(text, type, length=0, color='white', method='caption', align='nort
             font_size = 60
             size = (991, 150)
 
-        if is_string_cjk(text) is False:
-            font = 'Noto-Sans-Italic'
-        else:
-            font = 'Noto-Sans-CJK-JP-Medium'
+        font = unicode_search.search(text)
+        if font != 'Noto-Emoji':
+            font += '-Italic'
 
         return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
 
@@ -76,16 +48,16 @@ def make_text(text, type, length=0, color='white', method='caption', align='nort
             font_size = 45
             size = (991, 150)
 
-        if is_string_cjk(text) is False:        # If the text has a Chinese or Japanese Character in
-            font = 'Noto-Sans-Light-Italic'
-        else:
-            font = 'Noto-Sans-CJK-JP-Light'
+        font = unicode_search.search(text)
+        if font != 'Noto-Emoji':
+            font += '-Italic'
 
         return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
 
     if type == 'track':
-        font = 'Noto-Sans-Black'
-
+        font = unicode_search.search(text)
+        if font != 'Noto-Emoji':
+            font += '-Black'
 
         if make_4k:
             font_size = 200
@@ -94,12 +66,22 @@ def make_text(text, type, length=0, color='white', method='caption', align='nort
             font_size = 100
             size = (950, 660)
 
-        if is_string_cjk(text) is True:
-            font = 'Noto-Sans-CJK-JP-Black'
         if length > 50:
             return TextClip(text, size=size, color=color, font=font, method=method, align=align)
         else:
             return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
+
+    if type == 'thumb':
+        size = (610, 570)
+        font = unicode_search.search(text)
+        if font != 'Noto-Emoji':
+
+            if font == 'Noto-Sans':
+                font += '-Condensed-Bold'
+            else:
+                font += '-Bold'
+
+        return TextClip(text, size=size, color=color, font=font, method=method)
 
 
 def clear_folder(folder):
@@ -178,7 +160,6 @@ def main():
                 song_artist = clean_tag(str(audio['artist']))
                 song_track = clean_tag(str(audio['title']))
                 song_album = clean_tag(str(audio['album']))
-                album_artist = clean_tag(str(audio['albumartist']))
                 vid_length = audio.info.length
             else:   # if it got past the first if then its either a FLAc or MP3 file, so else is good enough
                 audio = EasyID3('input\\' + str(filename))
@@ -186,7 +167,6 @@ def main():
                 song_artist = clean_tag(str(audio['artist']))
                 song_track = clean_tag(str(audio['title']))
                 song_album = clean_tag(str(audio['album']))
-                album_artist = clean_tag(str(audio['albumartist']))
                 audio = MP3('input\\' + str(filename))
                 vid_length = audio.info.length
 
@@ -230,6 +210,7 @@ def main():
             del clip_album
             del clip_artist
 
+    # MAKING ALBUM VIDEO
     if number_or_files('input/') > 2 and make_whole_album == True:
         song_list = []  # this makes an array of all the video files in export. i found it easier to just re-export the video files in a cocatenate
 
@@ -246,7 +227,7 @@ def main():
 
         whole_album = whole_album.set_duration(totaltime)
 
-        whole_album.write_videofile('export/album.mp4', fps=1)
+        whole_album.write_videofile('export/album.mp4', fps=5)
 
 
 if __name__ == '__main__':
