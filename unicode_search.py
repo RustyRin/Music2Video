@@ -467,411 +467,407 @@ def search(input_string):
         # CJK
         current_range = CJK
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-CJK-JP"
+            return "NotoSansCJKjp"
 
         # Armenian
         current_range = Armenian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Armenian"
+            return "NotoSansArmenian"
 
         # Carian
         current_range = Carian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Carian"
+            return "NotoSansCarian"
 
         # Cypriot
         current_range = Cypriot_Syllabary
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Sypriot"
+            return "Noto-SansSypriot"
 
         # Georgian
         current_range = Georgian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Geogian"
+            return "NotoSansGeogian"
 
         # Glogolitic
         current_range = Glogolitic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Glogolitic"
+            return "NotoSansGlogolitic"
 
         # Gothic
         current_range = Gothic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Gothic"
+            return "NotoSansGothic"
 
         # Linear B
         current_range = Linear_B
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Linear-B"
+            return "NotoSansLinearB"
 
         # Lycian
         current_range = Lycian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Lycian"
+            return "NotoSansLycian"
 
         # Lydian
         current_range = Lydian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Lydian"
+            return "NotoSansLydian"
 
         # Ogham
         current_range = Ogham
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Ogham"
+            return "NotoSansOgham"
 
         # Old Italic
         current_range = Old_Italic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Old-Italic"
+            return "NotoSansOldItalic"
 
         # Runic
         current_range = Runic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Runic"
+            return "NotoSansRunic"
 
         # Shavian
         current_range = Shavian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Shavian"
+            return "NotoSansShavian"
 
         # Adlam
         current_range = Adlam
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Adlam"
+            return "NotoSansAdlam"
 
         # Bamum
         current_range = Bamum
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Bamum"
+            return "NotoSansBamum"
 
         # Coptic
         current_range = Coptic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Coptic"
+            return "NotoSansCoptic"
 
         # Egyption Hieroglyphs
         current_range = Egyptian_Hieroglyphs
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Egptian-Hieroglyphs"
+            return "NotoSansEgptianHieroglyphs"
 
         # Ethiopic
         current_range = Ethiopic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Ethiopic"
+            return "NotoSansEthiopic"
 
         # N'Ko
         current_range = NKo
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-NKo"
+            return "NotoSansNKo"
 
         # Osmanya
         current_range = Osmanya
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Osmanya"
+            return "NotoSansOsmanya"
 
         # Tifinagh
         current_range = Tifinagh
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tifinagh"
+            return "NotoSansTifinagh"
 
         # Anatolian Heiroglphys
         current_range = Anatolian_Hieroglyphs
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Anatolian-Hieroglyphs"
+            return "NotoSansAnatolianHieroglyphs"
 
         # Arabic
         current_range = Arabic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Arabic"
+            return "NotoSansArabic"
 
         # Arameric Imperial
         current_range = Arameric_Imperial
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Imperial-Aramaic"
+            return "NotoSansImperialAramaic"
 
         # Avestan
         current_range = Avestan
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Avestan"
+            return "NotoSansAvestan"
 
         # Hebrew
         current_range = Hebrew
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Hebrew"
+            return "NotoSansHebrew"
 
         # Mandiac
         current_range = Mandiac
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Mandiac"
+            return "NotoSansMandiac"
 
         # Pahlavi Inscriptional
         current_range = Pahlavi_Inscriptional
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Inscriptional-Pahlavi"
+            return "Noto-SansInscriptionalPahlavi"
 
         # Parthian Inscriptional
         current_range = Parthian_Inscriptional
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Inscriptional-Parthian"
+            return "NotoSansInscriptionalParthian"
 
         # Phoenician
         current_range = Phoenician
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Phoenician"
+            return "NotoSansPhoenician"
 
         # Samaritan
         current_range = Samaritan
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Samaritan"
+            return "NotoSansSamaritan"
 
         # Mongolian
         current_range = Mongolian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Mongolian"
+            return "NotoSansMongolian"
 
         # Old Turkic
         current_range = Old_Turkic
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Old-Turkic"
+            return "NotoSansOldTurkic"
 
         # Phags_Pa
         current_range = Phags_Pa
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Phags-Pa"
+            return "NotoSansPhagsPa"
 
         # Tibetan
         current_range = Tibetan
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tibetan"
+            return "NotoSansTibetan"
 
         # Bengali
         current_range = Bengali
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Bengali"
+            return "NotoSansBengali"
 
         # Brahmi
         current_range = Brahmi
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Brahmi"
+            return "NotoSansBrahmi"
 
         # Chakma
         current_range = Chakma
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Chakma"
+            return "NotoSansChakma"
 
         # Devanagari
         current_range = Devanagari
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Devanagari"
+            return "NotoSansDevanagari"
 
         # Gujarati
         current_range = Gujarati
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Gujarati"
+            return "NotoSansGujarati"
 
         # Gurmukhi
         current_range = Gurmukhi
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Gurmukhi"
+            return "NotoSansGurmukhi"
 
         # Kaithi
         current_range = Kaithi
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Kaithi"
+            return "NotoSansKaithi"
 
         # Kannada
         current_range = Kannada
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Kannada"
+            return "NotoSansKannada"
 
         # Kharoshthi
         current_range = Kharoshthi
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Kharoshthi"
+            return "NotoSansKharoshthi"
 
         # Lepcha
         current_range = Lepcha
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Lepcha"
+            return "NotoSansLepcha"
 
         # Limbu
         current_range = Limbu
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Limbu"
+            return "NotoSansLimbu"
 
         # Malayakan
         current_range = Malayalam
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Malayalam"
+            return "NotoSansMalayalam"
 
         # Meetei Mayek
         current_range = Meetei_Mayek
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Mayek"
+            return "NotoSansMayek"
 
         # Ol Chiki
         current_range = Ol_Chiki
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Ol-Chiki"
+            return "NotoSansOlChiki"
 
         # Oriya
         current_range = Oriya
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Oriya"
+            return "NotoSansOriya"
 
         # Saurashtra
         current_range = Saurashtra
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Saurashtraa"
+            return "NotoSansSaurashtraa"
 
         # Sinhala
         current_range = Sinhala
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Sinhala"
+            return "NotoSansSinhala"
 
         # Syloti Nagri
         current_range = Syloti_Nagri
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Syloti-Nagri"
+            return "NotoSansSylotiNagri"
 
         # Tamil
         current_range = Tamil
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tamil"
+            return "NotoSansTamil"
 
         # Telugu
         current_range = Telugu
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Telugu"
+            return "NotoSansTelugu"
 
         # Thaana
         current_range = Thaana
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Thaana"
+            return "NotoSansThaana"
 
         # Cham
         current_range = Cham
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Cham"
+            return "NotoSansCham"
 
         # Kayah Li
         current_range = Kayah_Li
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Kayah-Li"
+            return "NotoSansKayahLi"
 
         # Khmer
         current_range = Khmer
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Khmen"
+            return "NotoSansKhmen"
 
         # Lao
         current_range = Lao
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Lao"
+            return "NotoSansLao"
 
         # Myanmar
         current_range = Myanmar
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Myanmar"
+            return "NotoSansMyanmar"
 
         # New Tai Lue
         current_range = New_Tai_Lue
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-New-Tai-Lue"
+            return "NotoSansNewTaiLue"
 
         # Tai Le
         current_range = Tai_Le
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tai-Le"
+            return "NotoSansTaiLe"
 
         # Tai Viet
         current_range = Tai_Viet
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tai-Viet"
+            return "NotoSansTaiViet"
 
         # Thai
         current_range = Thai
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Thai"
+            return "NotoSansThai"
 
         # Balinese
         current_range = Balinese
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Balinese"
+            return "NotoSansBalinese"
 
         # Batak
         current_range = Batak
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Batak"
+            return "NotoSansBatak"
 
         # Buginese
         current_range = Buginese
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Buginese"
+            return "NotoSansBuginese"
 
         # Buhid
         current_range = Buhid
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Buhid"
+            return "NotoSansBuhid"
 
         # Hanunoo
         current_range = Hanunoo
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Hanunoo"
+            return "NotoSansHanunoo"
 
         # Javanese
         current_range = Javanese
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Javanese"
+            return "NotoSansJavanese"
 
         # Rejang
         current_range = Rejang
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Rejang"
+            return "NotoSansRejang"
 
         # Tagalong
         current_range = Tagalong
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tagalong"
+            return "NotoSansTagalong"
 
         # Tagbanwa
         current_range = Tagbanwa
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Tagbanwa"
+            return "NotoSansTagbanwa"
 
         # Cherokee
         current_range = Cherokee
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Cherokee"
+            return "NotoSansCherokee"
 
         # Deseret
         current_range = Deseret
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Deseret"
+            return "NotoSansDeseret"
 
         # Osage
         current_range = Osage
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Osage"
+            return "NotoSansOsage"
 
         # United Canadian Aborigional Syllabics
         current_range = UCAS
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return "Noto-Sans-Canadian-Aborigianal"
+            return "NotoSansCanadianAborigianal"
 
         # Emoji
         current_range = Emoji
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            return 'Noto-Emoji'
+            return 'NotoEmoji'
 
-    # i += 1
+        return 'NotoSans'
 
-    return "Noto-Sans"
-
-
-def main():
-    search()
+def main(input):
+    return search(input)
 
 
-if __name__ == '__main__':
-    arg = search(sys.argv)
+main(input)
