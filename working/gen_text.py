@@ -13,7 +13,6 @@ def artist(text, color='white', method='caption', make_4k=True, align='north-wes
 
     # you may need to edit unicode_search font names if your version of Noto has diffrent names
     font = unicode_search.search(text)
-    print(font)
     if 'Emoji' not in font:
         font += 'I'
 
