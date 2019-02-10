@@ -5,20 +5,25 @@ Takes audio and cover art and exports a video to upload online
 - [MoviePy](https://github.com/Zulko/moviepy)
 - [ImageMaick](https://www.imagemagick.org/script/index.php)
 - [Mutagen](https://github.com/llogiq/mutagen)
+- [OpenCV](https://pypi.org/project/opencv-python/)
+- [Numpy](https://www.numpy.org/)
 - [Noto Sans Font](https://www.google.com/get/noto/), but you can change it
 
 ## Running
 1. Delete the files in export and import folders
 2. Place in music files into input folder.
    - Music files need the following metadata:
-     - **Track Number**: as a simple number (ie. 5), not number out the total number of tracks (ie. 5/10)
+     - **Track Number**: as an integer (ie. 5), not number out the total number of tracks (ie. 5/10)
      - **Track Artist**
      - **Track Name**
      - **Album Name**
-3. If you want to can change a bit of settings in the python file, such as
+3. Change settings (in working/gen_video.py global variables)
    - 4K or 1080p resolution (Default 4K)
    - Exporting the whole album as a whole video as well as individual videos (Defaults to True)
    - Debug mode that exports only 5 second videos (Off on default)
+   - Clear export when starting
 
 ## Other
 If you want to use this to upload to YouTube I suggest [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader)
+
+Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
