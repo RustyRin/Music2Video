@@ -32,4 +32,6 @@ Todo
 - [ ] Force long single word song names to multi-online
 - [ ] Allow mix of emojis and text in artist, album and title boxes
 - [ ] Allow more granular control of the resolution by just giving the vertical height desired
-- [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art. 
+- [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art.
+- [ ] If there is a non-audio file in input, have it be skipped instead of breaking the program
+- [ ] If the track title is really long, make the text size smaller
