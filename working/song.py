@@ -35,12 +35,6 @@ class song(object):     # takes in a mutagen object
                 print('Track album not set or improper: ' + file_path)
                 return
 
-            try:  # ALBUM ARTIST
-                self.trackAlbumArtist = clean_tag(str(audio['albumartist']))
-            except:
-                print('Album artist not set or improper: ' + file_path)
-                return
-
             try:  # ART
                 os.system('ffmpeg -i \"' + file_path + '\" temp/art.png -y -loglevel quiet')
             except:
@@ -80,12 +74,6 @@ class song(object):     # takes in a mutagen object
                 self.trackAlbum = clean_tag(str(audio['album']))
             except:
                 print('Track album not set or improper: ' + file_path)
-                return
-
-            try:  # TRACK ALBUM ARTIST
-                self.trackAlbumArtist = clean_tag(str(audio['albumartist']))
-            except:
-                print('Album artist not set or improper: ' + file_path)
                 return
 
             try:  # ART

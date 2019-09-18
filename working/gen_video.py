@@ -3,17 +3,29 @@ from moviepy.editor import *
 import sys
 import cv2
 import numpy as np
-
-import song
-import gen_text
 from PIL import Image, ImageFilter
+
+# object that holds song metadata
+import song
+
+# generates various text clips
+import gen_text
+
+# makes thumbnail
+import gen_thumb
+
+# removes illegal or problematic chars for uploading
+import string_clean
 
 # settings
 make_4k = True  # resolution, if false resolution will be 1080p
 make_whole_album = True  # will make one large video from the videos from export. will use lots of ram
 make_songs = True  # do you want to make a video for each song. really only used for making album vid after batch rendering
-debug_mode = True  # makes videos 5 seconds long
+debug_mode = False  # makes videos 5 seconds long
 clear_export = True  # do you want to clear the export folder on startup. good for large albums
+
+
+# just turn off make full album and make the songs in batches then make full album
 
 
 # this looks at the album art and returns true if its dark
@@ -22,13 +34,11 @@ def is_art_dark(file_name):
     # it makes a histogram of the gray scale
     histogram = cv2.calcHist([img], [0], None, [256], [0, 255])
 
-    # fiddle with this for how sensitive dark detection is
+    # dark side              light side
     if sum(histogram[:30]) > sum(histogram[30:]):
-        # is dark
-        return True
+        return True     # dark
     else:
-        # is light
-        return False
+        return False    # light
 
 
 # returns the number of files in folder
@@ -74,7 +84,7 @@ def make_art_clip():
         ratio = art_width / 1800
 
         art_drop = art_drop.resize((art_width, art_height))  # resize
-        art_drop = art_drop.resize(width=1800)
+        art_drop = art_drop.resize(width=1800) # may not need, could possibly resize in main
 
         transparent = ImageClip('transparent.png')  # makes transparent, have to have to force resolution
         transparent = transparent.set_position('center')  # pos
@@ -104,8 +114,12 @@ def main():
 
             # gets song object
             song_object = song.make_song(os.path.abspath(os.pardir) + '/import/' + file_name)
-            album_artist = song_object.trackAlbumArtist
             album_name = song_object.trackAlbum
+
+            # Ptints song metadata
+            print('Title:        ' + song_object.trackTitle)
+            print('Number:       ' + song_object.trackNumber)
+            print('Album:        ' + song_object.trackAlbum)
 
             # gradient
             if make_4k:
@@ -170,21 +184,25 @@ def main():
             video.close()
             del clip_artist, clip_album, clip_track, clip_audio, video, vid_length, transparent, gradient, song_object
 
-    # if there is more than 2 files in the export folder and make album is true; make album
     if number_or_files(os.pardir + '/export') >= 2 and make_whole_album is True:
-        song_list = []  # video file clips of the individual songs are added to array
 
-        for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/export')):    # adding to array
+        print('\n____________________________________\n\nBuilding Album\n')
+
+        song_list = []
+
+        thumb = gen_thumb.make(album_name, True)
+        thumb.save_frame('temp/thumb/thumb.png')
+        del thumb
+
+        for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/export')):
             song_list.append(VideoFileClip(os.path.abspath(os.pardir + '/export/' + file_name)))
 
         whole_album = concatenate_videoclips(song_list, method='compose')
-
         if make_4k:
             whole_album = whole_album.resize(width=3840)
         else:
             whole_album = whole_album.resize(width=1080)
 
-        # export
         whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5)
 
 if __name__ == '__main__':
