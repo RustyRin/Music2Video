@@ -29,7 +29,7 @@ If you want to use this to upload to YouTube I suggest [porjo's youtubeuploader]
 Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
 
 Todo
-- [ ] Force long single word song names to multi-online
+- [ ] Force long single word song names to multi-line
 - [ ] Allow mix of emojis and text in artist, album and title boxes
 - [ ] Allow more granular control of the resolution by just giving the vertical height desired
 - [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art.
