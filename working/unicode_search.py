@@ -461,18 +461,17 @@ Default_Unicode = [  # FONT: NOTO SANS
 def search(input_string):
     input_string = str(input_string)
     input_string = list(input_string)
+
     for i in range(len(input_string)):
 
         # CJK
         current_range = CJK
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            print('Font range: CJK')
             return "NotoSansCJKjp"
 
         # Armenian
         current_range = Armenian
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
-            print('Font range: Armenian')
             return "NotoSansArmenian"
 
         # Carian
@@ -865,4 +864,10 @@ def search(input_string):
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
             return 'NotoEmoji'
 
-        return ('NotoSans')
+        return 'NotoSans'
+
+def main(input):
+    return search(input)
+
+
+main(input)
