@@ -3,6 +3,7 @@ Takes audio and cover art and exports a video to upload online
 
 ## Dependancies
 - [MoviePy](https://github.com/Zulko/moviepy)
+- [PIL](https://pillow.readthedocs.io/en/stable/), IIRC it is installed with Python 3 by default now.
 - [ImageMaick](https://www.imagemagick.org/script/index.php)
 - [Mutagen](https://github.com/llogiq/mutagen)
 - [OpenCV](https://pypi.org/project/opencv-python/)
@@ -10,28 +11,27 @@ Takes audio and cover art and exports a video to upload online
 - [Noto Sans Font](https://www.google.com/get/noto/), but you can change it
 
 ## Running
-1. Delete the files in export and import folders
+1. There are files in `import/` and in `export/` they are only there so GitHub keeps the folders. At least delete the file in `import/`
 2. Place in music files into input folder.
    - Music files need the following metadata:
      - **Track Number**: as an integer (ie. 5), not number out the total number of tracks (ie. 5/10)
      - **Track Artist**
      - **Track Name**
      - **Album Name**
-3. Change settings (in working/gen_video.py global variables)
-   - 4K or 1080p resolution (Default 4K)
-   - Exporting the whole album as a whole video as well as individual videos (Defaults to True)
-   - Debug mode that exports only 5 second videos (Off on default)
-   - Clear export when starting
+3. Change settings (in `working/gen_video.py` global variables)
+   - You can export in any resolution you want. Most tested is 1080p and 4K.
+   - Set if you want to make a while album video, this is **VERY** memory intensive.
+   - Set if you want to make songs. This will have purpose in the future for album only exporting.
+   - Upload songs and album is for if you want to upload the videos to YouTube. To read more about this see [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader) on how to set this up.
+     - uploader_binary is the filename of the uploader that you got from porjo.
+     - If you are uploading, it will be looking for `request.token` in `working/` so put your Google token in there
+   - clear_export will clear `export/` (and `thumbs/` if you have either uploading enabled) when you start the script.
+   - debug_mode prints debug lines and sets the video length to 5 seconds. This is true by default so you can make sure everything works before running for real.
 
 ## Other
-If you want to use this to upload to YouTube I suggest [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader)
-
 Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
 
-Todo
-- [ ] Force long single word song names to multi-line
-- [ ] Allow mix of emojis and text in artist, album and title boxes
-- [ ] Allow more granular control of the resolution by just giving the vertical height desired
+## Todo
 - [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art.
 - [ ] If there is a non-audio file in input, have it be skipped instead of breaking the program
 - [ ] If the track title is really long, make the text size smaller
