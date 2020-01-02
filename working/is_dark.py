@@ -7,8 +7,8 @@ def calc(debug_mode=False):
     # makes a histogram of the grayscale
     histogram = cv2.calcHist([img], [0], None, [256], [0, 255])
 
-    # dark side              light side
-    if sum(histogram[:200]) > sum(histogram[0:]):
+    # dark side              light side     default: :200 0:
+    if sum(histogram[:100]) > sum(histogram[50:]):
         if debug_mode:
             print('Detected dark art')
         return True     # dark
