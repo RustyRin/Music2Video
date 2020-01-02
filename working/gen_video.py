@@ -25,10 +25,17 @@ import gen_thumb
 resolution   = (3840, 2160)        # desired resolution, prob only works at 16:9 ratio
 make_album   = True                # at the send make one large video of all songs
 make_songs   = True                # skip making songs and just make album of whats in export
-upload_album = False                # upload the album video to youtube
-upload_songs = False                # upload each song video to youtube
+upload_album = True                # upload the album video to youtube
+upload_songs = True                # upload each song video to youtube
 clear_export = True                # clears /export and /thumbs before making videos
-debug_mode   = True                # displays extra prints, makes songs 5 sec long
+debug_mode   = False                # displays extra prints, makes songs 5 sec long
+
+# "advanced" settings
+upload_binary = 'youtubeuploader'  # Change this to what your binary is named
+video_background_blur = 6
+thumbnail_background_blur = 20
+video_gradient_opacity = 0
+thumbnail_gradient_opacity = 100
 
 # making videos
 def main():
@@ -80,7 +87,7 @@ def main():
                 clip_track = clip_track.set_position((0.5, 0.35), relative=True)
 
                 # making background image clips
-                gen_background.make(resolution=resolution, blur=12, file_name='background_video', debug_mode=debug_mode)
+                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode, gradient_opacity=video_gradient_opacity)
                 background_clip = ImageClip('temp/background_video.png')
                 background_clip = background_clip.set_position('center')
 
@@ -103,7 +110,8 @@ def main():
                 clip_audio = AudioFileClip(os.path.abspath(os.pardir) + '/import/' + file_name)
 
                 # making thumbnail
-                gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode)
+                if upload_songs or upload_album is True:
+                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur, gradient_opacity=thumbnail_gradient_opacity)
 
                 #making video
 
@@ -120,7 +128,7 @@ def main():
                 if upload_songs is True and debug_mode is False:
                     if sys.platform == 'linux':
                         #os.system('./youtubeuploader_linux_amd64 -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4\" -thumbnail \"/temp/thumb.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
-                        os.system('./youtubeuploader_linux_amd64 -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/' + song_object.trackNumber + '.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
+                        os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/' + song_object.trackNumber + '.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
                     else:
                         print('upload not currently implemented in windows, im just lazy')
 
@@ -149,7 +157,7 @@ def main():
         whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5)
 
         if upload_album is True and debug_mode is False:
-            os.system('./youtubeuploader_linux_amd64 -filename \"' + os.path.abspath(os.pardir) + '/export/album.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/thumb.png\" -title \"' + string_clean.clean(song_object.trackAlbumArtist) + ' // ' + string_clean.clean(song_object.trackAlbum) + ' (FULL ALBUM)\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta-album.json'))
+            os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/album.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/thumb.png\" -title \"' + string_clean.clean(song_object.trackAlbumArtist) + ' // ' + string_clean.clean(song_object.trackAlbum) + ' (FULL ALBUM)\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta-album.json'))
 
 
 ### misc functions
