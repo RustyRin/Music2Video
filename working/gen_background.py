@@ -11,7 +11,7 @@ import is_dark
 # should be able to take in any resolution
 # saves as png in
 
-def make(resolution=(3840,2160), blur=0, debug_mode=False, file_name=''):
+def make(resolution=(3840,2160), blur=0, debug_mode=False, file_name='', gradient_opacity=100):
 
     # opens art, then adds blur, then blows up
     art_image = Image.open('temp/art.png')
@@ -47,6 +47,9 @@ def make(resolution=(3840,2160), blur=0, debug_mode=False, file_name=''):
             print('Detected light art; using black gradient')
         gradient_image = Image.open('gradient_black.png')
 
+    # set opacity
+    gradient_image.putalpha(gradient_opacity)
+    
     # resize gradient
     gradient_image = gradient_image.resize(resolution)
     # put the
