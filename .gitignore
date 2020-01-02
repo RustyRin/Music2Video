@@ -5,6 +5,7 @@ working/temp/
 export/
 
 # ignore imports
+input/
 import/
 
 # ignore secrets
@@ -13,6 +14,13 @@ working/request.token
 
 # ignore my uploader
 working/youtubeuploader_linux_amd64
+working/youtubeuploader
+
+# ignore thumb folder
+thumb/
+
+meta.json
+meta-album.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
