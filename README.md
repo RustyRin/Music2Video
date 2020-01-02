@@ -27,6 +27,7 @@ Takes audio and cover art and exports a video to upload online
      - If you are uploading, it will be looking for `request.token` in `working/` so put your Google token in there
    - clear_export will clear `export/` (and `thumbs/` if you have either uploading enabled) when you start the script.
    - debug_mode prints debug lines and sets the video length to 5 seconds. This is true by default so you can make sure everything works before running for real.
+4. Run `working/gen_video.py`
 
 ## Other
 Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
