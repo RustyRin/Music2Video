@@ -29,7 +29,6 @@ def make(debug_mode=False):
     drop_shadow_image = Image.open('drop_square.png').convert('RGBA')
 
     # open drop shadow and resize it to the dimensions of the art
-    #drop_shadow_image = drop_shadow_image.resize((art_width + 200, art_height + 200), Image.ANTIALIAS)
     drop_shadow_image = drop_shadow_image.resize((int(art_width*1.2), int(art_height*1.2)), Image.ANTIALIAS)
 
     # save the resized drop shadow
