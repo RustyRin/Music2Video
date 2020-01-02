@@ -8,13 +8,16 @@ import PIL
 import gen_art
 import gen_background
 
-def make(text, file_name='thumb', is_album=False, debug_mode=False):
+def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gradient_opacity=100):
 
     # makes background for thumbnail
-    gen_background.make(resolution=(1280,720), blur=100, file_name='background_thumb', debug_mode=debug_mode)
+    if debug_mode:
+        print('Thumbnail blur: ' + str(blur))
+    gen_background.make(resolution=(1280,720), blur=blur, file_name='background_thumb', debug_mode=debug_mode, gradient_opacity=gradient_opacity)
 
     # makes clip, set position
-    temp = Image.open('temp/background_video.png')
+    temp = Image.open('temp/background_thumb.png')
+
     temp.thumbnail((1280,720), PIL.Image.ANTIALIAS)
     temp.save('temp/background_thumb.png', 'PNG')
     background = ImageClip('temp/background_thumb.png')
@@ -25,8 +28,8 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False):
 
     # make clip, gets size, sets position
     art_clip = ImageClip('temp/art_with_drop.png', transparent = True)
-    art_clip = art_clip.resize(height = 725)
-    art_clip = art_clip.set_position((-0.035, 'center'), relative = True)
+    art_clip = art_clip.resize(height = 720)
+    art_clip = art_clip.set_position((-0.025, 'center'), relative = True)
 
     # makes text, dif depending if it is making it for the album
     if is_album:
