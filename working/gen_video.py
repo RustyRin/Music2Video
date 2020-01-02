@@ -3,50 +3,165 @@ from moviepy.editor import *
 import sys
 import cv2
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image
 
 # object that holds song metadata
 import song
 
-# generates various text clips
+# makes text clips
 import gen_text
 
-# makes thumbnail
-import gen_thumb
+# takes the art and adds a drop shadow
+import gen_art
 
-# removes illegal or problematic chars for uploading
+# removes illegal or problematic characters for uploading
 import string_clean
 
+import gen_background
+
+import gen_thumb
+
 # settings
-make_4k = True  # resolution, if false resolution will be 1080p
-make_whole_album = True  # will make one large video from the videos from export. will use lots of ram
-make_songs = True  # do you want to make a video for each song. really only used for making album vid after batch rendering
-debug_mode = False  # makes videos 5 seconds long
-clear_export = True  # do you want to clear the export folder on startup. good for large albums
+resolution   = (3840, 2160)        # desired resolution, prob only works at 16:9 ratio
+make_album   = True                # at the send make one large video of all songs
+make_songs   = True                # skip making songs and just make album of whats in export
+upload_album = True                # upload the album video to youtube
+upload_songs = True                # upload each song video to youtube
+clear_export = True                # clears /export and /thumbs before making videos
+debug_mode   = False                # displays extra prints, makes songs 5 sec long
+
+# "advanced" settings
+upload_binary = 'youtubeuploader'  # Change this to what your binary is named
+video_background_blur = 6
+thumbnail_background_blur = 20
+video_gradient_opacity = 0
+thumbnail_gradient_opacity = 100
+
+# making videos
+def main():
+
+    # have to initialize
+    total_time = 0
+
+    # clearing folders
+    if clear_export:
+        clear_folder(os.path.abspath(os.pardir) + '/export')
+        clear_folder(os.path.abspath(os.pardir) + '/thumb')
+
+    # making songs
+    if make_songs:
+            # for every file in /import
+            for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/import')):
+
+                print('\n____________________________________\n')
+
+                # making song object, which also saves /working/temp/art.png
+                song_object = song.make_song(os.path.abspath(os.pardir) + '/import/' + file_name)
+
+                # prints song metadata
+                print('Title:        ' + song_object.trackTitle)
+                print('Number:       ' + song_object.trackNumber)
+                print('Album:        ' + song_object.trackAlbum)
+                print('Album Artist: ' + song_object.trackAlbumArtist + '\n')
+
+                # if debug mode, make vids 5 seconds long
+                if debug_mode:
+                    vid_length = 5
+                else:
+                    vid_length = song_object.trackLength
+
+                # used to make the full album
+                total_time += vid_length
+
+                # making text clips
+                clip_artist = gen_text.artist(text=song_object.trackArtist, resolution=resolution)
+                clip_artist = clip_artist.set_position((0.5, 0.1), relative=True)
+
+                clip_album = gen_text.album(text=song_object.trackAlbum, resolution=resolution)
+                if len(song_object.trackArtist) > 38:    # if they have a long band name
+                    clip_album = clip_album.set_position((0.5, 0.25), relative=True)
+                else:
+                    clip_album = clip_album.set_position((0.5, 0.17), relative=True)
+
+                clip_track = gen_text.track(text=song_object.trackTitle, resolution=resolution)
+                clip_track = clip_track.set_position((0.5, 0.35), relative=True)
+
+                # making background image clips
+                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode, gradient_opacity=video_gradient_opacity)
+                background_clip = ImageClip('temp/background_video.png')
+                background_clip = background_clip.set_position('center')
+
+                # making art image clips
+                gen_art.make(debug_mode=debug_mode)
+                art_clip = ImageClip('temp/art_with_drop.png', transparent=True)
+                art_clip = art_clip.set_position((-0.01, 'center'), relative=True)
+
+                # sizing
+                art_clip = art_clip.resize(width=resolution[0]*.521)
 
 
-# just turn off make full album and make the songs in batches then make full album
+
+                # have to use transparent to force the resolution no matter what
+                transparent_clip = ImageClip('transparent.png')
+                transparent_clip = transparent_clip.resize(resolution)
 
 
-# this looks at the album art and returns true if its dark
-def is_art_dark(file_name):
-    img = cv2.imread('temp/art.png')
-    # it makes a histogram of the gray scale
-    histogram = cv2.calcHist([img], [0], None, [256], [0, 255])
+                # making audio clip
+                clip_audio = AudioFileClip(os.path.abspath(os.pardir) + '/import/' + file_name)
 
-    # dark side              light side
-    if sum(histogram[:30]) > sum(histogram[30:]):
-        return True     # dark
-    else:
-        return False    # light
+                # making thumbnail
+                if upload_songs or upload_album is True:
+                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur, gradient_opacity=thumbnail_gradient_opacity)
+
+                #making video
+
+                video_clip = CompositeVideoClip([background_clip, art_clip, clip_artist, clip_album, clip_track])
+                video_clip = video_clip.set_audio(clip_audio)
+                video_clip = video_clip.set_duration(vid_length)
+
+                if debug_mode:
+                    video_clip.save_frame('temp/debug_frames/' + song_object.trackNumber + '.png')
+
+                video_clip.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1)
+
+                # upload
+                if upload_songs is True and debug_mode is False:
+                    if sys.platform == 'linux':
+                        #os.system('./youtubeuploader_linux_amd64 -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4\" -thumbnail \"/temp/thumb.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
+                        os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/' + song_object.trackNumber + '.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
+                    else:
+                        print('upload not currently implemented in windows, im just lazy')
+
+                # closing
+                clip_artist.close()
+                clip_album.close()
+                clip_track.close()
+                background_clip.close()
+                art_clip.close()
+                transparent_clip.close()
+                video_clip.close()
+
+    if number_or_files(os.pardir + '/export') >= 2 and make_album is True:
+
+        print('\n____________________________________\n\nBuilding Album\n')
+
+        song_list = []
+
+        gen_thumb.make(text=song_object.trackAlbum, is_album=True, debug_mode=debug_mode)
+
+        for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/export')):
+            song_list.append(VideoFileClip(os.path.abspath(os.pardir + '/export/' + file_name)))
+
+        whole_album = concatenate_videoclips(song_list, method='compose')
+
+        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5)
+
+        if upload_album is True and debug_mode is False:
+            os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/album.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/thumb.png\" -title \"' + string_clean.clean(song_object.trackAlbumArtist) + ' // ' + string_clean.clean(song_object.trackAlbum) + ' (FULL ALBUM)\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta-album.json'))
 
 
-# returns the number of files in folder
-def number_or_files(dir):
-    return len(os.listdir(dir))
+### misc functions
 
-
-# deletes  the contents of a specified folder, i'm only using it to clear export
 def clear_folder(folder):
     for the_file in os.listdir(folder):
         file_path = os.path.join(folder, the_file)
@@ -56,154 +171,10 @@ def clear_folder(folder):
         except Exception as e:
             print(e)
 
+# returns the number of files in folder
+def number_or_files(dir):
+    return len(os.listdir(dir))
 
-# makes the blurred art background
-def make_background():
-    temp = Image.open('temp/art.png')
-    temp = temp.filter(ImageFilter.GaussianBlur(radius=100))
-    temp.save('temp/blurred_art_video.png', 'PNG')
-    temp.close()
-    if make_4k:
-        return ImageClip('temp/blurred_art_video.png').set_position('center').resize(width=4000)
-    else:
-        return ImageClip('temp/blurred_art_video.png').set_position('center').resize(width=2000)
-
-
-# makes the art clip that is put on the left
-def make_art_clip():
-    art = Image.open('temp/art.png')  # might not need, keeping just in case
-    art_width, art_height = art.size  # only time it might be good is odd sized album art
-    art.close()
-
-    if make_4k:
-        art = ImageClip('temp/art.png').set_position((144, 300)).resize(width=1600)  # art clip
-
-        art_drop = ImageClip('drop_square.png', transparent=True)  # makes drop shadow clip
-        art_drop = art_drop.set_position((50, 200))  # set pos
-
-        ratio = art_width / 1800
-
-        art_drop = art_drop.resize((art_width, art_height))  # resize
-        art_drop = art_drop.resize(width=1800) # may not need, could possibly resize in main
-
-        transparent = ImageClip('transparent.png')  # makes transparent, have to have to force resolution
-        transparent = transparent.set_position('center')  # pos
-        transparent = transparent.resize(width=3840)  # resize
-    else:
-        art = ImageClip('temp/art.png').set_position((72, 150)).resize(width=800)  # art clip
-        art_drop = ImageClip('drop_square.png', transparent=True).set_position((25, 100)).resize(width=900)  # drop clip
-        transparent = ImageClip('transparent.png')  # transparent clip
-
-    art_drop = art_drop.set_opacity(0.5)  # sets drop opacity, if you want to tweak
-
-    return CompositeVideoClip([transparent, art_drop, art])
-
-
-def main():
-    # clearing export
-    if clear_export:
-        clear_folder(os.path.abspath(os.pardir) + '/export')
-
-    total_time = 0  # might not need, only used for making the whole album part
-    album_artist = ""
-    album_name = ""
-
-    if make_songs:
-        for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/import')):
-            print('\n____________________________________\n')
-
-            # gets song object
-            song_object = song.make_song(os.path.abspath(os.pardir) + '/import/' + file_name)
-            album_name = song_object.trackAlbum
-
-            # Ptints song metadata
-            print('Title:        ' + song_object.trackTitle)
-            print('Number:       ' + song_object.trackNumber)
-            print('Album:        ' + song_object.trackAlbum)
-
-            # gradient
-            if make_4k:
-                transparent = ImageClip('transparent.png').set_position('center').resize(width=3840)
-                if is_art_dark('temp/art.png'):
-                    gradient = ImageClip('gradient_white.png').set_position('center').resize(width=3840)
-                else:
-                    gradient = ImageClip('gradient.png').set_position('center').resize(width=3840)
-
-                # have to have transparent because composite video clip will make the first clip the resolution of the export
-            else:
-                transparent = ImageClip('transparent.png').set_position('center').resize(width=1920)
-                if is_art_dark('temp/art.png'):
-                    gradient = ImageClip('gradient_white.png').set_position('center').resize(width=1920)
-                else:
-                    gradient = ImageClip('gradient.png').set_position('center').resize(width=1920)
-
-            # debug mode makes the videos shorter so it exports faster
-            if debug_mode:
-                vid_length = 5
-            else:
-                vid_length = song_object.trackLength
-
-            total_time += vid_length
-
-            # maked text clips
-            if make_4k:
-                clip_artist = gen_text.artist(song_object.trackArtist).set_position((1858, 300))
-
-                if len(song_object.trackArtist) > 38:  # if the band has a really long name
-                    clip_album = gen_text.album(song_object.trackAlbum).set_position((1858, 600))
-                else:
-                    clip_album = gen_text.album(song_object.trackAlbum).set_position((1858, 460))
-
-                clip_track = gen_text.track(song_object.trackTitle).set_position((1858, 800))
-
-            else:
-                clip_artist = gen_text.artist(song_object.trackArtist, make_4k=False).set_position((929, 150))
-
-                if len(song_object.trackArtist) > 38:
-                    clip_album = gen_text.album(song_object.trackAlbum, make_4k=False).set_position((929, 300))
-                else:
-                    clip_album = gen_text.album(song_object.trackAlbum, make_4k=False).set_position((929, 225))
-
-                clip_track = gen_text.track(song_object.trackTitle, make_4k=False).set_position((929, 400))
-
-            clip_audio = AudioFileClip(os.path.abspath(os.pardir) + '/import/' + file_name)
-
-            # write video
-            video = CompositeVideoClip(
-                [transparent, make_background(), gradient, make_art_clip(), clip_artist, clip_album, clip_track])
-            video = video.set_audio(clip_audio)
-            video = video.set_duration(vid_length)
-            video.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1)
-
-            # closing
-            album = song_object.trackAlbum
-            clip_audio.close()
-            clip_track.close()
-            clip_album.close()
-            clip_artist.close()
-            video.close()
-            del clip_artist, clip_album, clip_track, clip_audio, video, vid_length, transparent, gradient, song_object
-
-    if number_or_files(os.pardir + '/export') >= 2 and make_whole_album is True:
-
-        print('\n____________________________________\n\nBuilding Album\n')
-
-        song_list = []
-
-        thumb = gen_thumb.make(album_name, True)
-        thumb.save_frame('temp/thumb/thumb.png')
-        del thumb
-
-        for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/export')):
-            song_list.append(VideoFileClip(os.path.abspath(os.pardir + '/export/' + file_name)))
-
-        whole_album = concatenate_videoclips(song_list, method='compose')
-        if make_4k:
-            whole_album = whole_album.resize(width=3840)
-        else:
-            whole_album = whole_album.resize(width=1080)
-
-        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5)
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,27 @@
+# ignore temp files
+working/temp/
+
+# ignore what it exports
+export/
+
+# ignore imports
+input/
+import/
+
+# ignore secrets
+working/client_secrets.json
+working/request.token
+
+# ignore my uploader
+working/youtubeuploader_linux_amd64
+working/youtubeuploader
+
+# ignore thumb folder
+thumb/
+
+meta.json
+meta-album.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -3,8 +3,7 @@ from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 import os
 
-
-class song(object):     # takes in a mutagen object
+class song(object):                     # takes in a mutagen object
 
     def __init__(self, file_path):
 
@@ -33,6 +32,12 @@ class song(object):     # takes in a mutagen object
                 self.trackAlbum = clean_tag(str(audio['album']))
             except:
                 print('Track album not set or improper: ' + file_path)
+                return
+
+            try:  # ALBUM ARTIST
+                self.trackAlbumArtist = clean_tag(str(audio['albumartist']))
+            except:
+                print('Album artist not set or improper: ' + file_path)
                 return
 
             try:  # ART
@@ -74,6 +79,12 @@ class song(object):     # takes in a mutagen object
                 self.trackAlbum = clean_tag(str(audio['album']))
             except:
                 print('Track album not set or improper: ' + file_path)
+                return
+
+            try:  # TRACK ALBUM ARTIST
+                self.trackAlbumArtist = clean_tag(str(audio['albumartist']))
+            except:
+                print('Album artist not set or improper: ' + file_path)
                 return
 
             try:  # ART
