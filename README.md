@@ -20,9 +20,9 @@ Takes audio and cover art and exports a video to upload online
      - **Album Name**
 3. Change settings (in `working/gen_video.py` global variables)
    - You can export in any resolution you want. Most tested is 1080p and 4K.
-   - Set if you want to make a while album video, this is **VERY** memory intensive.
+   - Set if you want to make a whole album video, this is **VERY** memory intensive.
    - Set if you want to make songs. This will have purpose in the future for album only exporting.
-   - Upload songs and album is for if you want to upload the videos to YouTube. To read more about this see [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader) on how to set this up.
+   - Upload songs and/ or album is for if you want to upload the videos to YouTube. To read more about this see [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader) on how to set this up.
      - uploader_binary is the filename of the uploader that you got from porjo.
      - If you are uploading, it will be looking for `request.token` in `working/` so put your Google token in there
    - clear_export will clear `export/` (and `thumbs/` if you have either uploading enabled) when you start the script.
