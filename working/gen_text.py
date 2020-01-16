@@ -59,7 +59,7 @@ def track(text, color='white', method='caption', resolution=(0,0), make_4k=True,
 # makes text clips in the thumbnail theme
 def thumb(text, color='white', method='caption', resolution=(0,0), make_4k=True, align='north-west'):
 
-    size = (610, 570)
+    size = (550, 570)
 
     font = unicode_search.search(text)
     #font = 'NotoSansCJKjp'
