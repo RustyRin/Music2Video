@@ -32,10 +32,10 @@ debug_mode   = False                # displays extra prints, makes songs 5 sec l
 
 # "advanced" settings
 upload_binary = 'youtubeuploader'  # Change this to what your binary is named
-video_background_blur = 6
-thumbnail_background_blur = 20
-video_gradient_opacity = 0
-thumbnail_gradient_opacity = 100
+video_background_blur = 10
+thumbnail_background_blur = 100
+# TODO
+# add force black and white gradient
 
 # making videos
 def main():
@@ -87,7 +87,7 @@ def main():
                 clip_track = clip_track.set_position((0.5, 0.35), relative=True)
 
                 # making background image clips
-                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode, gradient_opacity=video_gradient_opacity)
+                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode)
                 background_clip = ImageClip('temp/background_video.png')
                 background_clip = background_clip.set_position('center')
 
@@ -111,7 +111,7 @@ def main():
 
                 # making thumbnail
                 if upload_songs or upload_album is True:
-                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur, gradient_opacity=thumbnail_gradient_opacity)
+                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur)
 
                 #making video
 
@@ -122,7 +122,7 @@ def main():
                 if debug_mode:
                     video_clip.save_frame('temp/debug_frames/' + song_object.trackNumber + '.png')
 
-                video_clip.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1)
+                video_clip.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1, threads=4)
 
                 # upload
                 if upload_songs is True and debug_mode is False:
@@ -154,7 +154,7 @@ def main():
 
         whole_album = concatenate_videoclips(song_list, method='compose')
 
-        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5)
+        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5, threads=4)
 
         if upload_album is True and debug_mode is False:
             os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/album.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/thumb.png\" -title \"' + string_clean.clean(song_object.trackAlbumArtist) + ' // ' + string_clean.clean(song_object.trackAlbum) + ' (FULL ALBUM)\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta-album.json'))
