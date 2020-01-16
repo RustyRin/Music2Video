@@ -13,7 +13,7 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
     # makes background for thumbnail
     if debug_mode:
         print('Thumbnail blur: ' + str(blur))
-    gen_background.make(resolution=(1280,720), blur=blur, file_name='background_thumb', debug_mode=debug_mode, gradient_opacity=gradient_opacity)
+    gen_background.make(resolution=(1280,720), blur=blur, file_name='background_thumb', debug_mode=debug_mode)
 
     # makes clip, set position
     temp = Image.open('temp/background_thumb.png')
@@ -28,8 +28,8 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
 
     # make clip, gets size, sets position
     art_clip = ImageClip('temp/art_with_drop.png', transparent = True)
-    art_clip = art_clip.resize(height = 720)
-    art_clip = art_clip.set_position((-0.025, 'center'), relative = True)
+    art_clip = art_clip.resize(height = 650)
+    art_clip = art_clip.set_position((.005, 'center'), relative = True)
 
     # makes text, dif depending if it is making it for the album
     if is_album:
@@ -38,7 +38,7 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
         text_clip = gen_text.thumb(text)
 
     # sets text position
-    text_clip = text_clip.set_position((0.5, 'center'), relative = True)
+    text_clip = text_clip.set_position((0.52, 'center'), relative = True)
 
     thumbnail = CompositeVideoClip([background, art_clip, text_clip])
     thumbnail.save_frame(os.path.abspath(os.pardir) + '/thumb/' + file_name + '.png')
