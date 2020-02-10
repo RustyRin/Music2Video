@@ -44,3 +44,4 @@ Odds are you're going to have trouble with fonts. [If you do try this](https://m
 - [ ] Support setting the transparency of the gradient in the global variables settings
 - [ ] Support color emoji
 - [ ] Make `working/temp/debug_frames` a forced folder
+- [ ] Update the naming conventions for the Noto fonts so that they actually work
