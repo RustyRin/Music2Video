@@ -2,7 +2,7 @@
 Takes audio and cover art and exports a video to upload online
 
 ## Dependancies
-- [MoviePy](https://github.com/Zulko/moviepy)
+- [MoviePy](https://github.com/Zulko/moviepy), but it seems as if you'll need to install 1.0.0 as 1.0.1 spits out errors.
 - [PIL](https://pillow.readthedocs.io/en/stable/), IIRC it is installed with Python 3 by default now.
 - [ImageMaick](https://www.imagemagick.org/script/index.php)
 - [Mutagen](https://github.com/llogiq/mutagen)
@@ -36,3 +36,11 @@ Odds are you're going to have trouble with fonts. [If you do try this](https://m
 - [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art.
 - [ ] If there is a non-audio file in input, have it be skipped instead of breaking the program
 - [ ] If the track title is really long, make the text size smaller
+- [ ] Auto generate JSON file for YouTube upload
+  - [ ] automatically add social links if given
+  - [ ] support multiple song/album purchase links
+  - [ ] support auto time stamps for full album uploads
+- [ ] Support CJK languages mixed in with Latin
+- [ ] Support setting the transparency of the gradient in the global variables settings
+- [ ] Support color emoji
+- [ ] Make `working/temp/debug_frames` a forced folder
