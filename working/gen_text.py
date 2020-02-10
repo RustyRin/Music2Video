@@ -14,7 +14,7 @@ def artist(text, color='white', method='caption', resolution=(0,0), align='north
     print('Artist Font: ' + font)
 
     if 'Emoji' not in font or 'CJK' not in font:
-        font += 'I'
+        font += '-Italic'
         print('New Font: ' + font)
 
     return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
@@ -30,7 +30,7 @@ def album(text, color='white', method='caption', resolution=(0,0), make_4k=True,
     #print('Album Font: ' + font)
 
     if 'Emoji' not in font or 'CJK' not in font:
-        font += 'I'
+        font += '-Italic'
     elif 'CJK' in font:
         font += '-Medium'
 
@@ -49,7 +49,7 @@ def track(text, color='white', method='caption', resolution=(0,0), make_4k=True,
     if 'CJK' in font:
         font += '-Black'
     elif 'Emoji' not in font:
-        font += 'DisplayBk'
+        font += '-Display-Black'
 
     #font = 'NotoSansCJKjp-Black'
 
