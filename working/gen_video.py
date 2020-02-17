@@ -28,12 +28,13 @@ make_songs   = True                # skip making songs and just make album of wh
 upload_album = True                # upload the album video to youtube
 upload_songs = True                # upload each song video to youtube
 clear_export = True                # clears /export and /thumbs before making videos
-debug_mode   = False                # displays extra prints, makes songs 5 sec long
+debug_mode   = True                # displays extra prints, makes songs 5 sec long
 
 # "advanced" settings
 upload_binary = 'youtubeuploader'  # Change this to what your binary is named
 video_background_blur = 10
 thumbnail_background_blur = 100
+video_gradient_opacity = 100
 # TODO
 # add force black and white gradient
 
@@ -87,7 +88,7 @@ def main():
                 clip_track = clip_track.set_position((0.5, 0.35), relative=True)
 
                 # making background image clips
-                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode)
+                gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode, gradient_opacity=video_gradient_opacity/100)
                 background_clip = ImageClip('temp/background_video.png')
                 background_clip = background_clip.set_position('center')
 
