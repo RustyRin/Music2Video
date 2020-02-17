@@ -22,11 +22,11 @@ import gen_background
 import gen_thumb
 
 # settings
-resolution   = (3840, 2160)        # desired resolution, prob only works at 16:9 ratio
-make_album   = True                # at the send make one large video of all songs
+resolution   = (1280, 720)        # desired resolution, prob only works at 16:9 ratio
+make_album   = False                # at the send make one large video of all songs
 make_songs   = True                # skip making songs and just make album of whats in export
-upload_album = True                # upload the album video to youtube
-upload_songs = True                # upload each song video to youtube
+upload_album = False                # upload the album video to youtube
+upload_songs = False                # upload each song video to youtube
 clear_export = True                # clears /export and /thumbs before making videos
 debug_mode   = True                # displays extra prints, makes songs 5 sec long
 
@@ -34,7 +34,7 @@ debug_mode   = True                # displays extra prints, makes songs 5 sec lo
 upload_binary = 'youtubeuploader'  # Change this to what your binary is named
 video_background_blur = 10
 thumbnail_background_blur = 100
-video_gradient_opacity = 100
+video_gradient_opacity = 200
 # TODO
 # add force black and white gradient
 
@@ -95,11 +95,28 @@ def main():
                 # making art image clips
                 gen_art.make(debug_mode=debug_mode)
                 art_clip = ImageClip('temp/art_with_drop.png', transparent=True)
-                art_clip = art_clip.set_position((-0.01, 'center'), relative=True)
+                #art_clip = art_clip.set_position((-0.01, 'center'), relative=True)
 
                 # sizing
                 art_clip = art_clip.resize(width=resolution[0]*.521)
+                print('hello')
+                print('Art clip size: ' + str(art_clip.size))
 
+                # tall
+                if (art_clip.size[0]/art_clip.size[1] > 1):
+                    if debug_mode:
+                        print("Short art")
+                    art_clip.resize(height=resolution[1]*0.33)
+                elif (art_clip.size[0]/art_clip.size[1] < 1):
+                    if debug_mode:
+                        print('Tall art')
+                    art_clip = art_clip.resize(width=resolution[0]*.33)
+                    art_clip = art_clip.set_position((0.04, 'center'), relative=True)
+                elif (art_clip.size[0]/art_clip.size[1] == 1):
+                    if debug_mode:
+                        print('Square art')
+                    art_clip = art_clip.resize(width=resolution[0]*.521)
+                    art_clip = art_clip.set_position((-.01, 'center'), relative=True)
 
 
                 # have to use transparent to force the resolution no matter what
