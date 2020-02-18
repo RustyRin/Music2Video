@@ -34,7 +34,7 @@ debug_mode   = True                # displays extra prints, makes songs 5 sec lo
 upload_binary = 'youtubeuploader'  # Change this to what your binary is named
 video_background_blur = 10
 thumbnail_background_blur = 100
-video_gradient_opacity = 200
+video_gradient_opacity = 100
 # TODO
 # add force black and white gradient
 
