@@ -8,7 +8,7 @@ def calc(debug_mode=False):
     histogram = cv2.calcHist([img], [0], None, [256], [0, 255])
 
     # dark side              light side     default: :200 0:
-    if sum(histogram[:150]) > sum(histogram[0:]):
+    if sum(histogram[:0]) > sum(histogram[256:]):
         if debug_mode:
             print('Detected dark art')
         return True     # dark
