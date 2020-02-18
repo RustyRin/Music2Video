@@ -22,7 +22,7 @@ import gen_background
 import gen_thumb
 
 # settings
-resolution   = (1280, 720)        # desired resolution, prob only works at 16:9 ratio
+resolution   = (3840, 2160)        # desired resolution, prob only works at 16:9 ratio
 make_album   = False                # at the send make one large video of all songs
 make_songs   = True                # skip making songs and just make album of whats in export
 upload_album = False                # upload the album video to youtube
