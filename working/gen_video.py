@@ -164,7 +164,7 @@ def main():
 
         song_list = []
 
-        gen_thumb.make(text=song_object.trackAlbum, is_album=True, debug_mode=debug_mode)
+        gen_thumb.make(text=song_object.trackAlbum, is_album=True, debug_mode=debug_mode, gradient_opacity=thumbnail_gradient_opacity/100)
 
         for file_name in sorted(os.listdir(os.path.abspath(os.pardir) + '/export')):
             song_list.append(VideoFileClip(os.path.abspath(os.pardir + '/export/' + file_name)))
