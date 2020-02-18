@@ -13,7 +13,7 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
     # makes background for thumbnail
     if debug_mode:
         print('Thumbnail blur: ' + str(blur))
-    gen_background.make(resolution=(1280,720), blur=blur, file_name='background_thumb', debug_mode=debug_mode)
+    gen_background.make(resolution=(1280,720), blur=blur, file_name='background_thumb', debug_mode=debug_mode, gradient_opacity=gradient_opacity)
 
     # makes clip, set position
     temp = Image.open('temp/background_thumb.png')

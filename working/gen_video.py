@@ -35,6 +35,7 @@ upload_binary = 'youtubeuploader'  # Change this to what your binary is named
 video_background_blur = 10
 thumbnail_background_blur = 100
 video_gradient_opacity = 100
+thumbnail_gradient_opacity = 100
 # TODO
 # add force black and white gradient
 
@@ -129,7 +130,7 @@ def main():
 
                 # making thumbnail
                 if upload_songs or upload_album is True:
-                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur)
+                    gen_thumb.make(text=song_object.trackTitle, file_name=song_object.trackNumber, debug_mode=debug_mode, blur=thumbnail_background_blur, gradient_opacity=thumbnail_gradient_opacity/100)
 
                 #making video
 
