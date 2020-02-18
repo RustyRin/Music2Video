@@ -139,7 +139,7 @@ def main():
                 if debug_mode:
                     video_clip.save_frame('temp/debug_frames/' + song_object.trackNumber + '.png')
 
-                video_clip.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1, threads=8)
+                video_clip.write_videofile((os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4'), fps=1, threads=12)
 
                 # upload
                 if upload_songs is True and debug_mode is False:
@@ -171,7 +171,7 @@ def main():
 
         whole_album = concatenate_videoclips(song_list, method='compose')
 
-        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5, threads=8)
+        whole_album.write_videofile(os.path.abspath(os.pardir) + '/export/album.mp4', fps=5, threads=12)
 
         if upload_album is True and debug_mode is False:
             os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/album.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/thumb.png\" -title \"' + string_clean.clean(song_object.trackAlbumArtist) + ' // ' + string_clean.clean(song_object.trackAlbum) + ' (FULL ALBUM)\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta-album.json'))
