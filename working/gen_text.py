@@ -11,11 +11,9 @@ def artist(text, color='white', method='caption', resolution=(0,0), align='north
     # you may need to edit unicode_search font names if your version of Noto has diffrent names
     font = unicode_search.search(text)
     #font = 'NotoSansCJKjp'
-    print('Artist Font: ' + font)
 
     if 'Emoji' not in font or 'CJK' not in font:
         font += 'I'
-        print('New Font: ' + font)
 
     return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
 
@@ -50,7 +48,6 @@ def track(text, color='white', method='caption', resolution=(0,0), make_4k=True,
         font += '-Black'
     elif 'Emoji' not in font:
         font += 'DisplayBk'
-    print("Track font: " + font)
     #font = 'NotoSansBk'
 
     return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)

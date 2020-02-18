@@ -23,12 +23,12 @@ import gen_thumb
 
 # settings
 resolution   = (3840, 2160)        # desired resolution, prob only works at 16:9 ratio
-make_album   = False                # at the send make one large video of all songs
+make_album   = True                # at the send make one large video of all songs
 make_songs   = True                # skip making songs and just make album of whats in export
-upload_album = False                # upload the album video to youtube
-upload_songs = False                # upload each song video to youtube
+upload_album = True                # upload the album video to youtube
+upload_songs = True                # upload each song video to youtube
 clear_export = True                # clears /export and /thumbs before making videos
-debug_mode   = True                # displays extra prints, makes songs 5 sec long
+debug_mode   = False                # displays extra prints, makes songs 5 sec long
 
 # "advanced" settings
 upload_binary = 'youtubeuploader'  # Change this to what your binary is named
@@ -100,8 +100,6 @@ def main():
 
                 # sizing
                 art_clip = art_clip.resize(width=resolution[0]*.521)
-                print('hello')
-                print('Art clip size: ' + str(art_clip.size))
 
                 # tall
                 if (art_clip.size[0]/art_clip.size[1] > 1):
