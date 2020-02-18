@@ -864,7 +864,7 @@ def search(input_string):
         if any([range["from"] <= ord(input_string[i]) <= range["to"] for range in current_range]):
             return 'NotoEmoji'
 
-        return 'Noto-Sans'
+        return 'NotoSans'
 
 def main(input):
     return search(input)
