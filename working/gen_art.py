@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 
 import resize_art
+import dropShadow
+#import gausVideoBlur
 
 # applies drop shadow in the same shape as the album art
 # should not care what aspect ratio the art is
@@ -15,7 +17,7 @@ import resize_art
 
 # image attached to the variable names is to remind me that these are open in
 # PIL and that they are not moviepy clips
-def make(debug_mode=False):
+def make(debug_mode=False, dropOffset=(5,5), dropZoom=1.5):
 
     # open
     #resize_art.maintain_ratio('temp/art.png', (1000, 1000))
@@ -25,11 +27,13 @@ def make(debug_mode=False):
     # get size, then calc the aspect ratio
     art_width, art_height = art_image.size
 
+    #dropShadow.make('temp/art.png')
+    drop_shadow_image = dropShadow.make('temp/art.png').convert('RGBA')
 
-    drop_shadow_image = Image.open('drop_square.png').convert('RGBA')
+    #drop_shadow_image = Image.open('drop_square.png').convert('RGBA')
 
     # open drop shadow and resize it to the dimensions of the art
-    drop_shadow_image = drop_shadow_image.resize((int(art_width*1.2), int(art_height*1.2)), Image.ANTIALIAS)
+    drop_shadow_image = drop_shadow_image.resize((int(art_width*dropZoom), int(art_height*dropZoom)), Image.ANTIALIAS)
 
     # save the resized drop shadow
     drop_shadow_image.save('temp/art_drop_shadow.png', 'PNG')
