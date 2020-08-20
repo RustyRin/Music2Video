@@ -64,6 +64,7 @@ def main():
                 print('Title:        ' + song_object.trackTitle)
                 print('Number:       ' + song_object.trackNumber)
                 print('Album:        ' + song_object.trackAlbum)
+                print('Track Artist: ' + song_object.trackArtist)
                 print('Album Artist: ' + song_object.trackAlbumArtist + '\n')
 
                 # if debug mode, make vids 5 seconds long
