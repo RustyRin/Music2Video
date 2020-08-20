@@ -33,9 +33,9 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
 
     # makes text, dif depending if it is making it for the album
     if is_album:
-        text_clip = gen_text.thumb(text + '\n(FULL ALBUM)')
+        text_clip = gen_text.thumb(text + '\n(FULL ALBUM)', debug_mode=debug_mode)
     else:
-        text_clip = gen_text.thumb(text)
+        text_clip = gen_text.thumb(text, debug_mode=debug_mode)
 
     # sets text position
     text_clip = text_clip.set_position((0.52, 'center'), relative = True)

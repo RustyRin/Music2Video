@@ -77,16 +77,16 @@ def main():
                 total_time += vid_length
 
                 # making text clips
-                clip_artist = gen_text.artist(text=song_object.trackArtist, resolution=resolution)
+                clip_artist = gen_text.artist(text=song_object.trackArtist, resolution=resolution, debug_mode=debug_mode)
                 clip_artist = clip_artist.set_position((0.5, 0.1), relative=True)
 
-                clip_album = gen_text.album(text=song_object.trackAlbum, resolution=resolution)
+                clip_album = gen_text.album(text=song_object.trackAlbum, resolution=resolution, debug_mode=debug_mode)
                 if len(song_object.trackArtist) > 38:    # if they have a long band name
                     clip_album = clip_album.set_position((0.5, 0.25), relative=True)
                 else:
                     clip_album = clip_album.set_position((0.5, 0.17), relative=True)
 
-                clip_track = gen_text.track(text=song_object.trackTitle, resolution=resolution)
+                clip_track = gen_text.track(text=song_object.trackTitle, resolution=resolution, debug_mode=debug_mode)
                 clip_track = clip_track.set_position((0.5, 0.35), relative=True)
 
                 # making background image clips

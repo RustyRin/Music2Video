@@ -50,11 +50,14 @@ def track(text, color='white', method='caption', resolution=(0,0), make_4k=True,
         font += 'DisplayBk'
     #font = 'NotoSansBk'
 
+    if debug_mode:
+        print('Track Font: ' + font)
+
     return TextClip(text, size=size, color=color, fontsize=font_size, font=font, method=method, align=align)
 
 
 # makes text clips in the thumbnail theme
-def thumb(text, color='white', method='caption', resolution=(0,0), make_4k=True, align='north-west'):
+def thumb(text, color='white', method='caption', resolution=(0,0), make_4k=True, align='north-west', debug_mode=False):
 
     size = (550, 570)
 
@@ -66,5 +69,8 @@ def thumb(text, color='white', method='caption', resolution=(0,0), make_4k=True,
             font += 'CB'
         else:
             font += '-Black'
+
+    if debug_mode:
+        print('Tumbnail Font: ' + font)
 
     return TextClip(text, size=size, color=color, font=font, method=method)
