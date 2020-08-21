@@ -95,8 +95,10 @@ def main():
                 background_clip = background_clip.set_position('center')
 
                 # making art image clips
-                gen_art.make(debug_mode=debug_mode)
-                art_clip = ImageClip('temp/art_with_drop.png', transparent=True)
+                #gen_art.make(debug_mode=debug_mode) # legacy
+
+                # art_clip = ImageClip('temp/art_with_drop.png', transparent=True)
+                art_clip = gen_art.make()
                 #art_clip = art_clip.set_position((-0.01, 'center'), relative=True)
 
                 # sizing
@@ -115,8 +117,8 @@ def main():
                 elif (art_clip.size[0]/art_clip.size[1] == 1):
                     if debug_mode:
                         print('Square art')
-                    art_clip = art_clip.resize(width=resolution[0]*.521)
-                    art_clip = art_clip.set_position((-.01, 'center'), relative=True)
+                    art_clip = art_clip.resize(width=resolution[0]*.64)
+                    art_clip = art_clip.set_position((-.064, 'center'), relative=True)
 
 
                 # have to use transparent to force the resolution no matter what

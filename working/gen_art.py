@@ -6,6 +6,7 @@ import numpy as np
 
 import resize_art
 import dropShadow
+from moviepy.editor import *
 #import gausVideoBlur
 
 # applies drop shadow in the same shape as the album art
@@ -17,8 +18,14 @@ import dropShadow
 
 # image attached to the variable names is to remind me that these are open in
 # PIL and that they are not moviepy clips
-def make(debug_mode=False, dropOffset=(5,5), dropZoom=1.5):
+def make(debug_mode=False):
+    artClip = ImageClip(str(dropShadow.apply('temp/art.png')), transparent=True)
+    return artClip
 
+
+
+
+    '''
     # open
     #resize_art.maintain_ratio('temp/art.png', (1000, 1000))
 
@@ -63,3 +70,4 @@ def make(debug_mode=False, dropOffset=(5,5), dropZoom=1.5):
     # closing
     art_image.close()
     drop_shadow_image.close()
+    '''
