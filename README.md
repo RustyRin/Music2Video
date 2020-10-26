@@ -1,47 +1,45 @@
 # Music2Video
 Takes audio and cover art and exports a video to upload online
 
+![](lib/docs/examples/readme_example.png)
+
 ## Dependancies
 - [MoviePy](https://github.com/Zulko/moviepy), but it seems as if you'll need to install 1.0.0 as 1.0.1 spits out errors.
 - [PIL](https://pillow.readthedocs.io/en/stable/), IIRC it is installed with Python 3 by default now.
-- [ImageMaick](https://www.imagemagick.org/script/index.php)
+- [ImageMagick](https://www.imagemagick.org/script/index.php)
 - [Mutagen](https://github.com/llogiq/mutagen)
 - [OpenCV](https://pypi.org/project/opencv-python/)
 - [Numpy](https://www.numpy.org/)
 - [Noto Sans Font](https://www.google.com/get/noto/), but you can change it
 
 ## Running
-1. There are files in `import/` and in `export/` they are only there so GitHub keeps the folders. At least delete the file in `import/`
-2. Place in music files into input folder.
-   - Music files need the following metadata:
-     - **Track Number**: as an integer (ie. 5), not number out the total number of tracks (ie. 5/10)
-     - **Track Artist**
-     - **Track Name**
-     - **Album Name**
-3. Change settings (in `working/gen_video.py` global variables)
-   - You can export in any resolution you want. Most tested is 1080p and 4K.
-   - Set if you want to make a whole album video, this is **VERY** memory intensive.
-   - Set if you want to make songs. This will have purpose in the future for album only exporting.
-   - Upload songs and/ or album is for if you want to upload the videos to YouTube. To read more about this see [porjo's youtubeuploader](https://github.com/porjo/youtubeuploader) on how to set this up.
-     - uploader_binary is the filename of the uploader that you got from porjo.
-     - If you are uploading, it will be looking for `request.token` in `working/` so put your Google token in there
-   - clear_export will clear `export/` (and `thumbs/` if you have either uploading enabled) when you start the script.
-   - debug_mode prints debug lines and sets the video length to 5 seconds. This is true by default so you can make sure everything works before running for real.
-4. Run `working/gen_video.py`
+1. Place music files into the `import/` folder.  
+   - If there is a delete_me file in import, delete it  
+2. Select the theme you would like to use.
+   1. To select a theme, go into the `themes/` folder and copy the `theme.py` file into the root folder (the `Music2Video` folder where everything is)
+   2. Your selected theme might have some settings that you may want to edit. You could change them by opening your `theme.py` file and changing some marked variables.
+3. Run the program `music2video.py`.
+   1. There are some global settings that you can set with some CLI arguments
+4. Wait for your videos to be rendered in `export/`
 
-## Other
-Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
+## Notes
+- Odds are you're going to have trouble with fonts. [If you do try this](https://martin-thoma.com/add-a-new-font-to-imagemagick/)
+- Please make sure that all of your audio files have
+   - Track title
+   - Track artist
+   - Track album artist
+   - Track album
+   - Track Number
+   - Track Art
+- This uses a fair bit of RAM, so make sure you've downloaded enough 😉
 
 ## Todo
-- [ ] If album art is not 1:1 aspect ratio for the size of the art so it is more centered. Mostly for taller art.
 - [ ] If there is a non-audio file in input, have it be skipped instead of breaking the program
 - [ ] If the track title is really long, make the text size smaller
-- [ ] Auto generate JSON file for YouTube upload
-  - [ ] automatically add social links if given
-  - [ ] support multiple song/album purchase links
-  - [ ] support auto time stamps for full album uploads
 - [ ] Support CJK languages mixed in with Latin
 - [ ] Support setting the transparency of the gradient in the global variables settings
 - [ ] Support color emoji
-- [ ] Make `working/temp/debug_frames` a forced folder
-- [ ] Update the naming conventions for the Noto fonts so that they actually work
+- [ ] Animated track progress
+- [ ] Audio visualizations
+  - [ ] Waveform
+  - [ ] MEL Spectrogram
