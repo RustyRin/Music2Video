@@ -1,112 +1,88 @@
-from typing import Text
-from numpy.core.fromnumeric import clip
-
-from numpy.lib.function_base import angle
-from themes.radio import gen_background
 from moviepy.editor import *
 
-# object that hold all the song info
+# object that holds song metadata
 from lib import song
 
-# makes the text clips
+# makes text clips
 from lib import gen_text
 
-# takes in the art and adds a drop shadow
+# takes the art and adds a drop shadow
 from lib import gen_art
 
-# removes illegal or problematic chars for uploading
+# removes illegal or problematic characters for uploading
 from lib import string_clean
 
-# if there are any custom things from the slab theme folder, they go here
-# import xyz
+# makes the backgrounds
+from themes.radio import gen_background
 
-# my functions
-from lib import myFunctions
-
-# makes thumbnails
-# this theme needs to make its own thumbnails in the same style of the theme
+# makes the thumbnails for youtube uploads
 from lib import gen_thumb
 
-'''
-This theme is assuming that the art
-is at a perfect 1:1 ratio
-so if youre giving it a tall or wide art, it might
-look off
+def make(songObject=None, resolution=(1920,1080), debug_mode=False, forceBGColor=None, forceGradientColor=None, forceFont=None):
 
-Use the radio theme as it is the most accepting
-of weird things
-'''
 
-def make(songObject=None, resolution=(3840, 2160), debug_mode=False):
+    # make a settings file that you would copy with thise theme file
+    # make some sort of settings comfirmation function that checks if say
+    # this settings file would have a sections that is the the name of the theme it is for
+    # then this theme file would compare the theme name to one saved here
+    # if they do not match throw an exception
 
-    # slab options
-    slab_color = '#9b42f5'
-    slab_rotate = 75
+    # if you need to force the color of the gradient. Will only work for "black" to force black gradient or "white" to force a white one, enter None to have it automatical do it
+    force_gradient_color = None
 
-    # text options
-    text_clip_artist_font_size = 100
-    text_clip_artist_font_color = '#c20010'
-    text_clip_title_font_size = 250
-    text_clip_title_font_color = slab_color
+    # how blurry you want to make background of the video to be, defult is 20
+    video_background_blur = 20
 
-    # art / drop shadow options
-    # messing with some of the drop shadow setting
-    # will mess with the placment of the art
-    drop_shadow_blur = 33
-    drop_shadow_offset = (0,0)
-    drop_shadow_color = ('#000000')
-    drop_shadow_opacity = 0.5
-    drop_shadow_zoom = 1.30
+    # how see through you want tht gradient to be, default is 95
+    video_gradient_opacity = 95
 
-    # the color clip needs rgb and not hex, so convert
-    slab_color = myFunctions.hex_to_rgb(slab_color)
-    slab_color_background = myFunctions.hex_to_rgb('#FFFFFF')
+    # making text clips
+    clip_artist = gen_text.artist(text=songObject.trackArtist, resolution=resolution, debug_mode=debug_mode)
+    clip_artist = clip_artist.set_position((0.5, 0.1), relative=True)
 
-    # make the art with a drop shadow, then move it
-    clip_art = gen_art.make(
-        debug_mode=debug_mode,
-        artLocation='lib/temp/art.png',
-        drop_shadow_blur=drop_shadow_blur,
-        drop_shadow_offset=drop_shadow_offset,
-        drop_shadow_color=drop_shadow_color,
-        drop_shadow_opacity=drop_shadow_opacity,
-        drop_shadow_zoom=drop_shadow_zoom)
-    clip_art = clip_art.set_position((-0.05, -0.04), relative=True)
-    clip_art = clip_art.resize(width=resolution[0]*.70)
+    clip_album = gen_text.album(text=songObject.trackAlbum, resolution=resolution, debug_mode=debug_mode)
+    if len(songObject.trackArtist) > 38:    # if they have a long band name
+        clip_album = clip_album.set_position((0.5, 0.25), relative=True)
+    else:
+        clip_album = clip_album.set_position((0.5, 0.17), relative=True)
 
-    # make the color slap, and then rotate it, then move it
-    clip_color_slab = ColorClip(
-        size=resolution,
-        color=slab_color)
-    clip_color_slab = clip_color_slab.add_mask().rotate(slab_rotate)
-    clip_color_slab = clip_color_slab.set_position((-0.25, 'center'), relative=True)
+    clip_track = gen_text.track(text=songObject.trackTitle, resolution=resolution, debug_mode=debug_mode)
+    clip_track = clip_track.set_position((0.5, 0.35), relative=True)
 
-    # making the bg white with a white color slab
-    clip_color_background = ColorClip(
-        size=resolution,
-        color=slab_color_background)
-    
-    # artist text clip
-    clip_artist = gen_text.artist(
-        text=songObject.trackArtist, 
-        color=text_clip_artist_font_color, 
-        font_size=text_clip_artist_font_size, 
-        resolution=resolution, 
-        debug_mode=debug_mode)
-    clip_artist = clip_artist.set_position((0.52, 0.07), relative=True)
+    # making background image clips
+    gen_background.make(resolution=resolution, blur=video_background_blur, file_name='background_video', debug_mode=debug_mode, gradient_opacity=video_gradient_opacity/100)
+    background_clip = ImageClip('lib/temp/background_video.png')
+    background_clip = background_clip.set_position('center')
 
-    # track title text clip
-    clip_title = gen_text.track(
-        text=songObject.trackTitle,
-        color=text_clip_title_font_color,
-        resolution=resolution,
-        font_size=text_clip_title_font_size,
-        box_size=(1882, 1080),
-        debug_mode=debug_mode)
-    clip_title = clip_title.set_position((0.51, 0.1), relative=True)
-    
-    # making the transparent clip that will force the resolution
-    clip_transparent = ImageClip('lib/transparent.png')
-    clip_transparent = clip_transparent.resize(resolution)
+    # make art clip
+    art_clip = gen_art.make()
 
-    return CompositeVideoClip([clip_transparent, clip_color_background, clip_color_slab, clip_art, clip_artist, clip_title])
+    if (art_clip.size[0]/art_clip.size[1] > 1):
+        if debug_mode:
+            print("Short art")
+        art_clip.resize(height=resolution[1]*0.33)
+        art_clip = art_clip.set_position((-.01, 'center'), relative=True)
+    elif (art_clip.size[0]/art_clip.size[1] < 1):
+        if debug_mode:
+            print('Tall art')
+        art_clip = art_clip.resize(width=resolution[0]*.51)
+        art_clip = art_clip.set_position((0.002, 'center'), relative=True)
+    elif (art_clip.size[0]/art_clip.size[1] == 1):
+        if debug_mode:
+            print('Square art')
+        art_clip = art_clip.resize(width=resolution[0]*.64)
+        art_clip = art_clip.set_position((-.064, 'center'), relative=True)
+
+
+    # have to use transparent to force the resolution no matter what
+    transparent_clip = ImageClip('lib/transparent.png')
+    transparent_clip = transparent_clip.resize(resolution)
+
+    # make thumbnail for this song with the themes tumbnail file
+    # needs to be updated
+    gen_thumb.make(text=songObject.trackTitle, file_name=('thumb/' + songObject.trackNumber + '.png'), debug_mode=debug_mode)
+
+    return CompositeVideoClip([background_clip, art_clip, clip_artist, clip_album, clip_track])
+
+if __name__ == "__main__":
+    make(songObject=None, forceBGColor=None, forceGradientColor=None, forceFont=None)
