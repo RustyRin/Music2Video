@@ -1,12 +1,12 @@
-from typing import Text
-from numpy.core.fromnumeric import clip
+# from typing import Text
+# from numpy.core.fromnumeric import clip
 
-from numpy.lib.function_base import angle
-from themes.radio import gen_background
+# from numpy.lib.function_base import angle
+# from themes.radio import gen_background
 from moviepy.editor import *
 
 # object that hold all the song info
-from lib import song
+# from lib import song
 
 # makes the text clips
 from lib import gen_text
@@ -15,7 +15,7 @@ from lib import gen_text
 from lib import gen_art
 
 # removes illegal or problematic chars for uploading
-from lib import string_clean
+# from lib import string_clean
 
 # if there are any custom things from the slab theme folder, they go here
 # import xyz
@@ -25,7 +25,7 @@ from lib import myFunctions
 
 # makes thumbnails
 # this theme needs to make its own thumbnails in the same style of the theme
-from lib import gen_thumb
+# from lib import gen_thumb
 
 '''
 This theme is assuming that the art
