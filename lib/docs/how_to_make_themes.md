@@ -104,3 +104,34 @@ Now, lets say you want to insert the album art
 Above, I both made the art clip and then set the position of the clip relative to the size of the resolution.  
 
 Since the art clip is just a [ImageClip in moviepy](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=imageclip#imageclip), you can use all of the same functions you can and would use on a normal one.
+
+For text, there are some pre-made legacy text functions in `gen_text.py`.
+It has functions for artists, album name, track name and thumbnail text.
+Since these functions are legacy from what is now the Radio theme, it assumes you have [Noto Sans](https://www.google.com/get/noto/) installed.
+
+ All but thumbnail take in
+ - color: text color
+ - method: [How the text will be applied](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=textclip#moviepy.video.VideoClip.TextClip)
+ - font_size: font size in px
+ - font: The font you want, but this 99% doesn't work on anything but Noto Sans
+ - resolution: The resolution of your export, if you dont give the font size, it will calculate it based off of the resolution
+ - box_size: the size of the text box
+ - make_4k: this is legacy and I haven't gotten around to see if anything still uses it
+ - align: [how the text will align](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=textclip#moviepy.video.VideoClip.TextClip)
+ - debug_mode: if you are running in debug mode. this does more print outs
+
+Now, when you are done making clips and [setting where they will be](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=textclip#moviepy.video.VideoClip.VideoClip.set_position), it is time to make the Composite Clip
+
+[Composite Video Clip](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=composite%20video%20clip#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip) is a video clip made up many clips.
+
+One thing I must say before making the clip, you need to make a transparent image clip.
+The reasoning for this is that some long time ago I discovered making a composite clip didnt crop when exporting, and just uses the resolution of the bottom clip for the export, or something like that.
+So make a image clip of the transparent png in `lib/transparent.png`, then resize it to your resolution by `transparent_clip_name = transparent_clip_name.resize(resolution)`
+
+Now this is your final line of code,
+you're going to return a composite video clip with things in the background first, then things in the front last.
+So you're transparent clip should *always* be first.
+Your composite clip could look something like
+`return CompositeVideoClip([transparent_clip, art_clip, clip_artist, clip_album, clip_track])`
+
+You're done!
