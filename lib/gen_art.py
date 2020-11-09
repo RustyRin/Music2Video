@@ -20,7 +20,7 @@ def make(
         artLocation = 'lib/temp/art.png'
 
     artClip = ImageClip(str(dropShadow.apply(
-        image=artLocation,           # passing droip shadow vars
+        image=artLocation,           # passing drop shadow vars
         blurAmount=drop_shadow_blur,
         dropOffset=drop_shadow_offset,
         shadowColor=drop_shadow_color,
