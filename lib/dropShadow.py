@@ -42,7 +42,8 @@ def apply(image, blurAmount=25, dropOffset=(5,5), shadowColor=('#000000'), shado
     dropImage.putdata(newData)
 
     # make a transparent background, size it bigger than the image (gotta be larger for the blur)
-    newImage = Image.new(mode="RGBA", size=((round(drop_width*1.5)), (round(drop_height*1.5))))
+    newImage = Image.new(mode="RGBA", size=((round(drop_width*dropZoom)), (round(drop_height*dropZoom))))
+
 
     # paste the drop shadow on the with the desired the offset
     newImage.paste(dropImage, (offset[0] + dropOffset[0], offset[1] + dropOffset[1]))

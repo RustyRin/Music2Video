@@ -81,7 +81,8 @@ def make(songObject=None, resolution=(1920,1080), debug_mode=False, forceBGColor
     # make thumbnail for this song with the themes tumbnail file
     # needs to be updated
     gen_thumb.make(text=songObject.trackTitle, file_name=('thumb/' + songObject.trackNumber + '.png'), debug_mode=debug_mode)
-
+    gen_thumb.make(text=songObject.trackAlbum, file_name=('thumb/album.png'), is_album=True, debug_mode=debug_mode)
+    
     return CompositeVideoClip([background_clip, art_clip, clip_artist, clip_album, clip_track])
 
 if __name__ == "__main__":

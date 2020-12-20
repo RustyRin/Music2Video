@@ -42,8 +42,8 @@ def make(text, file_name='thumb', is_album=False, debug_mode=False, blur=100, gr
 
     # make clip, gets size, sets position
     art_clip = ImageClip('lib/temp/art_with_drop.png', transparent = True)
-    art_clip = art_clip.resize(height = 650)
-    art_clip = art_clip.set_position((.005, 'center'), relative = True)
+    art_clip = art_clip.resize(height = 960)
+    art_clip = art_clip.set_position((-.10, 'center'), relative = True)
 
     # makes text, dif depending if it is making it for the album
     if is_album:

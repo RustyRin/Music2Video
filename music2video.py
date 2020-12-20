@@ -6,6 +6,7 @@ import numpy as np
 from PIL import Image
 import argparse
 import importlib
+import pathlib
 
 # custom functions to make my life easier
 # from lib import myFunctions   # not needed rn, but maybe in the future
@@ -30,6 +31,7 @@ def listThemes():
 def main(args):
 
     # settings
+    upload_binary = 'youtubeuploader'
     resolution   = args.resolution     # desired resolution, prob only works at 16:9 ratio
     make_album   = args.makeAlbum      # at the send make one large video of all songs
     make_songs   = args.makeSongs      # skip making songs and just make album of whats in export
@@ -89,9 +91,12 @@ def main(args):
 
                 # upload
                 if upload_songs is True and debug_mode is False:
+                    if debug_mode == False:
+                        print('System Platform: ' + str(sys.platform))
                     if sys.platform == 'linux':
                         # this needs to be fixed when i get upload token again
-                        os.system('./' + upload_binary + ' -filename \"' + os.path.abspath(os.pardir) + '/export/' + song_object.trackNumber + '.mp4' + '\" -thumbnail \"' + os.path.abspath(os.pardir) + '/thumb/' + song_object.trackNumber + '.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + (os.path.abspath(os.pardir) + '/meta.json'))
+                        print(str(os.path.abspath(os.getcwd())))
+                        os.system('./' + upload_binary + ' -filename \"' + str(os.path.abspath(os.getcwd())) + '/export/' + song_object.trackNumber + '.mp4' + '\" -thumbnail \"' + str(os.path.abspath(os.getcwd())) + '/thumb/' + song_object.trackNumber + '.png\" -title \"' + string_clean.clean(song_object.trackArtist) + ' // ' + string_clean.clean(song_object.trackTitle) + '\" -metaJSON ' + str(os.path.abspath(os.getcwd())) + '/meta.json')
                     else:
                         print('upload not currently implemented in windows, im just lazy')
 
@@ -105,18 +110,18 @@ def main(args):
         song_list = []
 
         #gen_thumb.make(text=song_object.trackAlbum, is_album=True, debug_mode=debug_mode, gradient_opacity=thumbnail_gradient_opacity/100)
-        gen_thumb.make(text=song_object.trackAlbum, is_album=True, debug_mode=debug_mode, gradient_opacity=100/100)
+        gen_thumb.make(text=song_object.trackAlbum, file_name='thumb/album', is_album=True, debug_mode=debug_mode, gradient_opacity=100/100)
 
         for file_name in sorted(os.listdir('export/')):
             song_list.append(VideoFileClip('export/' + file_name))
 
         whole_album = concatenate_videoclips(song_list, method='compose').set_duration(total_time)
 
-        whole_album.write_videofile('export/album.mp4', fps=fps, threads=12)
+        whole_album.write_videofile('export/album.mp4', fps=fps, threads=24)
 
         if upload_album is True and debug_mode is False:
             # this needs to be fixed when i get an upload token
-            os.system('./lib/youtubeuploader -filename \"export/album.mp4\" -thumbnail \"thumb/album.png\" -title \"' + song_object.trackAlbumArtist + ' // ' + song_object.trackAlbum + ' (FULL ALBUM)\" -metaJSON meta-album.json')
+            os.system('./' + upload_binary + ' -filename \"' + str(os.path.abspath(os.getcwd())) + '/export/album.mp4\" -thumbnail \"' + str(os.path.abspath(os.getcwd())) + '/thumb/album.png\" -title \"' + song_object.trackAlbumArtist + ' // ' + song_object.trackAlbum + ' (FULL ALBUM)\" -metaJSON ' + str(os.path.abspath(os.getcwd())) + '/meta-album.json')
 
 ### misc functions
 
@@ -140,12 +145,12 @@ if __name__ == '__main__':
     parser.add_argument("--listThemes", help="Lists the available themes", action="store_true")
 
     parser.add_argument("--resolution", default=(3840,2160), help="To set the video resolution. Using high resoltions with makeAlbum on will crash if you run out of ram. MUST be in (horizontal,height)")
-    parser.add_argument('--fps', default=24, help="The framerate of the exported video, lower numbers save space and speed up rendering, higher makes any animations in selected theme smoother. Default is 24")
-    parser.add_argument("--makeAlbum", choices=[True, False], default=True,help="If you want to export all of the videos into one long album long video, this eats up ram at high resolutions")
-    parser.add_argument("--makeSongs", choices=[True, False], default=True, help="If you want to make the songs, default is True. This is useful if you already made some of the videos and want to only render specific videos while exporting full album")
-    parser.add_argument("--uploadSongs", choices=[True, False], default=False, help="If you want to upload videos to YouTube after render. You need to set up the uploader first.")
-    parser.add_argument("--uploadAlbum", choices=[True, False], default=False, help="If you want to upload the album video after render, make album also need to be eneabled.")
-    parser.add_argument('--clearExport', choices=[True, False], default=True, help="clears the export and thumbnail folders after rendering")
+    parser.add_argument('--fps', default=1, help="The framerate of the exported video, lower numbers save space and speed up rendering, higher makes any animations in selected theme smoother. Default is 24")
+    parser.add_argument("--makeAlbum", default=True,help="If you want to export all of the videos into one long album long video, this eats up ram at high resolutions")
+    parser.add_argument("--makeSongs", default=True, help="If you want to make the songs, default is True. This is useful if you already made some of the videos and want to only render specific videos while exporting full album")
+    parser.add_argument("--uploadSongs", default=False, help="If you want to upload videos to YouTube after render. You need to set up the uploader first.")
+    parser.add_argument("--uploadAlbum", default=False, help="If you want to upload the album video after render, make album also need to be eneabled.")
+    parser.add_argument('--clearExport', default=True, help="clears the export and thumbnail folders after rendering")
     parser.add_argument('--debugMode', default=False, help="Enables debug mode. This enables verbose logging and forces all videos to be 5 seconds long.")
 
     parser.add_argument('--themeSettings', help="For any arguments for the theme you are using")
